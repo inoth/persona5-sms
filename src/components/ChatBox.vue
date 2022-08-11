@@ -21,13 +21,8 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import LoginResp from '../types/login';
 import MessageBox from './MessageBox.vue'
-
-// let user: LoginResp = {
-//     id: '123',
-//     name: '321',
-// }
+import MessageBody from "../types/message";
 
 export default defineComponent({
     name: "add-login",
@@ -36,12 +31,23 @@ export default defineComponent({
     },
     data() {
         return {
-            user: {
-                id: '123',
-                name: '321',
-            } as LoginResp,
             message: '',
-            messageList:[]            
+            messageList: [
+                {
+                    icon: 'string',
+                    sourceId: 'string',
+                    sourceName: 'string',
+                    msgType: 'string',
+                    msg: 'string',
+                },
+                {
+                    icon: 'string',
+                    sourceId: 'string',
+                    sourceName: 'string',
+                    msgType: 'string',
+                    msg: 'string',
+                }
+            ] as MessageBody[]
         };
     },
     methods: {},
