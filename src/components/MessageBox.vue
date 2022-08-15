@@ -100,6 +100,8 @@ export default defineComponent({
     },
     data() {
         return {
+            enfontSize : .5,
+            cnfontSize : 1.1,
             hackText: '' as string,
         };
     },
@@ -293,9 +295,18 @@ export default defineComponent({
         CheckWitdh(item: string) {
             const regex = /\w+/gm;
             if (regex.exec(item) != null) {
-                return 0.3
+                return this.enfontSize
             }
-            return 1.1
+            return this.cnfontSize
+        },
+        SingleLineWidth(item: string): number {
+            const pt = /\w/gm;
+            let m = item.match(pt)
+            if (m) {
+                return m?.length
+            } else {
+                return 0
+            }
         },
         wrappedMessage(): MsgBox[] {
             // Kind of a hacky way of implementing word wrapping
@@ -304,8 +315,11 @@ export default defineComponent({
             // without actually rendering it on the DOM.
             let lines: MsgBox[] = []
             if (this.message.length > 0) {
-                let allWidth = this.message.length * this.fontSize
                 this.hackText = this.message
+                let enLen = this.SingleLineWidth(this.message)
+                let en = enLen * this.enfontSize
+                let cn = (this.message.length - enLen) * this.cnfontSize
+                let allWidth = (en + cn) * this.fontSize
                 if (allWidth > this.messageBox.centerWidth) {
                     // let lineHeight = Math.ceil(allWidth / this.messageBox.centerWidth)
                     let line = [];
