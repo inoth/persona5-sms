@@ -6,7 +6,7 @@
     transform-origin: center;
 }
 
-#ChatBox {
+.MsgBox {
     width: 100%;
     /* height: 100px; */
     font-size: 14px;
@@ -18,7 +18,7 @@
 }
 </style>
 <template>
-    <div id="ChatBox">
+    <div class="MsgBox">
         <svg xmlns="http://www.w3.org/2000/svg" :viewBox="`0 0 500 ${viewBoxHeight}`">
 
             <text ref="hackText" visibility="hidden" :style="{ fontSize: fontSize + 'px' }">{{ hackText }}</text>
@@ -285,7 +285,7 @@ export default defineComponent({
             //   ---
             //
             let boxHeight = this.containerHeight + this.messageBox.origin.y * 2 + 10;
-            this.$emit('msgBoxHight', boxHeight)
+            // this.$emit('msgBoxHight', boxHeight)
             return boxHeight
         },
         primaryColor() {

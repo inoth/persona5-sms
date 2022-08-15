@@ -132,3 +132,10 @@ textarea {
   *display: inline;
   *zoom: 1;
 }
+
+#app {
+  width: 100%;
+  background-color: #c30f00;
+  text-align: center;
+  text-align: -webkit-center;
+}

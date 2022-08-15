@@ -4,20 +4,18 @@
     background-repeat: no-repeat;
     background-size: 100% 100%;
     min-width: 800px;
-    min-height: 800px;
+    min-height: 1000px;
     max-width: 1080px;
     max-height: 1000px;
-    height: auto;
-    padding-left: 35%;
-    padding-right: 17%;
-    padding-top: 15%;
 }
 
 #chatbox {
-    width: auto;
-    max-width: 1080px;
-    height: 800px;
+    overflow-x: hidden;
     overflow-y: scroll;
+    max-width: 500px;
+    height: 800px;
+    margin-left: 17%;
+    min-width: 500px;
 }
 
 #chatbox::-webkit-scrollbar {
@@ -29,7 +27,7 @@
     <div id="chatboxbg">
         <div id="chatbox">
             <MessageBox v-for="msg of messageList" :remote="msg.sourceId != user.id" :name="msg.sourceName"
-                :icon="msg.icon" :message="msg.msg" v-on:msgBoxHight="getBoxHight" />
+                :icon="msg.icon" :message="msg.msg" />
         </div>
     </div>
     <div>
@@ -54,7 +52,7 @@ export default defineComponent({
                 id: 'abc123',
                 name: 'inoth',
             } as LoginResp,
-            msgBoxHight: 0,
+            // msgBoxHight: 0,
             message: '',
             messageList: [
                 {
@@ -205,9 +203,9 @@ export default defineComponent({
         };
     },
     methods: {
-        getBoxHight(val: number) {
-            this.msgBoxHight = val
-        },
+        // getBoxHight(val: number) {
+        //     this.msgBoxHight = val
+        // },
         setMessage() {
             if (!this.message) {
                 return
@@ -221,13 +219,15 @@ export default defineComponent({
             } as MessageBody
             this.messageList.push(msg)
             this.message = ''
-            let chatbox = document.getElementById('chatbox') as HTMLElement
-            if (chatbox as HTMLElement) {
-                let scrollTop = (chatbox?.scrollHeight as number - this.msgBoxHight)
-                // console.log('应该的高度为: ' + scrollTop)
-                chatbox.scrollTop = scrollTop
-                console.log('现在高度为: ' + chatbox.scrollTop)
-            }
+            this.scrollToBot()
+        },
+        async scrollToBot() {
+            setTimeout(() => {
+                let chatbox = document.getElementById('chatbox') as HTMLElement
+                if (chatbox as HTMLElement) {
+                    chatbox.scrollTop = chatbox.scrollHeight
+                }
+            }, 50);
         }
     },
     watch: {}
