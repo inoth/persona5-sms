@@ -1,12 +1,13 @@
 <style scoped>
 #chatboxbg {
-    background-image: url("src/assets/images/bgimgs/chatbox.png");
+    background-image: url("src/assets/images/bgimgs/chatbox.svg");
     background-repeat: no-repeat;
     background-size: 100% 100%;
-    min-width: 800px;
+    width: 1100px;
     min-height: 1000px;
     max-width: 1080px;
-    max-height: 1000px;
+    max-height: 1080px;
+    overflow:visible;
 }
 
 #chatbox {
