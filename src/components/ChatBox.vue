@@ -1,9 +1,16 @@
 <style scoped>
 #chatbox {
-    background: #cc0000;
-    width: 500px;
+    background-image: url("src/assets/images/bgimgs/chatbox.png");
+    background-repeat: no-repeat;
+    background-size: 100%;
+    width: 1920px;
+    min-height: 800px;
     max-width: 100%;
     max-height: 100%;
+    height: 100%;
+    padding-left: 35%;
+    padding-right: 35%;
+    padding-top: 15%;
 }
 </style>
 
@@ -37,13 +44,13 @@ export default defineComponent({
             message: '',
             messageList: [
                 {
-                    icon: "src/assets/images/cbimage.png",
+                    icon: "src/assets/images/icon/cbimage.png",
                     sourceId: "abc112",
                     sourceName: "inoth1",
                     msg: "test",
                 },
                 {
-                    icon: "src/assets/images/1660535970309.png",
+                    icon: "src/assets/images/icon/1660535970309.png",
                     sourceId: "abc123",
                     sourceName: "inoth2",
                     msg: "test",
@@ -55,7 +62,7 @@ export default defineComponent({
         setMessage() {
             let r = Math.floor((Math.random() * 10) + 1)
             let msg = {
-                icon: "src/assets/images/cbimage.png",
+                icon: "src/assets/images/icon/cbimage.png",
                 sourceId: r >= 5 ? this.user.id : '123',
                 sourceName: this.user.name,
                 msg: this.message,
