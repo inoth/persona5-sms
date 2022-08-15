@@ -8,7 +8,7 @@
 
 #ChatBox {
     width: 100%;
-    height: 100px;
+    /* height: 100px; */
     font-size: 14px;
     fill: #fff;
 }
@@ -19,7 +19,7 @@
 </style>
 <template>
     <div id="ChatBox">
-        <svg xmlns="http://www.w3.org/2000/svg" :viewBox="`0 0 500 ${viewBoxHeight}`" :style="style">
+        <svg xmlns="http://www.w3.org/2000/svg" :viewBox="`0 0 500 ${viewBoxHeight}`">
 
             <text ref="hackText" visibility="hidden" :style="{ fontSize: fontSize + 'px' }">{{ hackText }}</text>
 
@@ -34,11 +34,11 @@
                 <polygon points="2,-10 62,-10 100,42 10,58" />
             </clipPath>
 
-            <image clip-path="url(#avatarClipPath)" v-if="remote" x="-10" y="-10" xlink:href="../assets/images/cbimage.png"
+            <image clip-path="url(#avatarClipPath)" v-if="remote" x="-10" y="-10" :xlink:href="icon"
                 :transform="`translate(30,${containerHeight / 2 + messageBox.origin.y - 25})`" width="80px" />
             <text v-if="remote" :transform="`translate(33,${containerHeight / 2 + messageBox.origin.y + 50})`"
                 style="font-size: 12px;fill: #fff;">
-                <tspan>hello world</tspan>
+                <tspan>{{ name }}</tspan>
             </text>
             <!-- Message Text Container Border -->
             <polygon :points="containerBorderPoints" :style="{ fill: primaryColor }" :class="{ flipX: !remote }" />
@@ -75,6 +75,10 @@ const lineHeight: Number = 1.5;
 export default defineComponent({
     name: "messageBox",
     props: {
+        icon: {
+            type: String,
+            required: true,
+        },
         name: {
             type: String,
             required: true,
@@ -100,13 +104,8 @@ export default defineComponent({
     },
     data() {
         return {
-            hackText: '',
-            style: {
-                opacity: 1
-            }
+            hackText: '' as string,
         };
-
-
     },
     computed: {
         // ------------------------------------------
@@ -139,8 +138,6 @@ export default defineComponent({
                     right: 35
                 }
             };
-
-
         },
         textOffset() {
             return {
@@ -157,23 +154,18 @@ export default defineComponent({
                     x: this.messageBox.origin.x,
                     y: this.messageBox.origin.y
                 },
-
                 {
                     x: this.messageBox.origin.x + this.messageBox.centerWidth + this.messageBox.rightWidth,
                     y: this.messageBox.origin.y
                 },
-
                 {
                     x: this.messageBox.origin.x + this.messageBox.centerWidth,
                     y: this.messageBox.origin.y + this.containerHeight + this.messageBox.slantHeight
                 },
-
                 {
                     x: this.messageBox.origin.x - this.messageBox.leftWidth,
                     y: this.messageBox.origin.y + this.containerHeight
-                }].
-
-                map(p => `${p.x},${p.y}`).join(' ');
+                }].map(p => `${p.x},${p.y}`).join(' ');
         },
         containerBorderPoints() {
             return [
@@ -181,23 +173,18 @@ export default defineComponent({
                     x: this.messageBox.origin.x - this.messageBox.border.normal,
                     y: this.messageBox.origin.y - this.messageBox.border.normal
                 },
-
                 {
                     x: this.messageBox.origin.x + this.messageBox.centerWidth + this.messageBox.border.right,
                     y: this.messageBox.origin.y - this.messageBox.border.normal
                 },
-
                 {
                     x: this.messageBox.origin.x + this.messageBox.centerWidth + this.messageBox.border.normal,
                     y: this.messageBox.origin.y + this.containerHeight + this.messageBox.border.normal + this.messageBox.slantHeight
                 },
-
                 {
                     x: this.messageBox.origin.x - this.messageBox.border.left,
                     y: this.messageBox.origin.y + this.containerHeight + this.messageBox.border.normal
-                }].
-
-                map(p => `${p.x},${p.y}`).join(' ');
+                }].map(p => `${p.x},${p.y}`).join(' ');
         },
         containerTailPoints() {
             return [
@@ -205,27 +192,22 @@ export default defineComponent({
                     x: this.messageBox.origin.x - 33,
                     y: this.messageBox.origin.y + this.containerHeight / 2 + 8
                 },
-
                 {
                     x: this.messageBox.origin.x - 17,
                     y: this.messageBox.origin.y + this.containerHeight / 2 - 10
                 },
-
                 {
                     x: this.messageBox.origin.x - 12,
                     y: this.messageBox.origin.y + this.containerHeight / 2 - 4
                 },
-
                 {
                     x: this.messageBox.origin.x,
                     y: this.messageBox.origin.y + this.containerHeight / 2 - 10
                 },
-
                 {
                     x: this.messageBox.origin.x,
                     y: this.messageBox.origin.y + this.containerHeight / 2 + 5
                 },
-
                 {
                     x: this.messageBox.origin.x - 18,
                     y: this.messageBox.origin.y + this.containerHeight / 2 + 10
@@ -234,9 +216,7 @@ export default defineComponent({
                 {
                     x: this.messageBox.origin.x - 22,
                     y: this.messageBox.origin.y + this.containerHeight / 2 + 5
-                }].
-
-                map(p => `${p.x},${p.y}`).join(' ');
+                }].map(p => `${p.x},${p.y}`).join(' ');
         },
         containerTailBorderPoints() {
             return [
@@ -244,38 +224,30 @@ export default defineComponent({
                     x: this.messageBox.origin.x - 40,
                     y: this.messageBox.origin.y + this.containerHeight / 2 + 12
                 },
-
                 {
                     x: this.messageBox.origin.x - 15,
                     y: this.messageBox.origin.y + this.containerHeight / 2 - 16
                 },
-
                 {
                     x: this.messageBox.origin.x - 12,
                     y: this.messageBox.origin.y + this.containerHeight / 2 - 10
                 },
-
                 {
                     x: this.messageBox.origin.x,
                     y: this.messageBox.origin.y + this.containerHeight / 2 - 15
                 },
-
                 {
                     x: this.messageBox.origin.x,
                     y: this.messageBox.origin.y + this.containerHeight / 2 + 10
                 },
-
                 {
                     x: this.messageBox.origin.x - 20,
                     y: this.messageBox.origin.y + this.containerHeight / 2 + 15
                 },
-
                 {
                     x: this.messageBox.origin.x - 24,
                     y: this.messageBox.origin.y + this.containerHeight / 2 + 10
-                }].
-
-                map(p => `${p.x},${p.y}`).join(' ');
+                }].map(p => `${p.x},${p.y}`).join(' ');
         },
         containerHeight() {
             // Compute how much vertical space the message text takes up by
@@ -335,7 +307,6 @@ export default defineComponent({
             // about determining the bounding box of some text,
             // without actually rendering it on the DOM.
             let lines: MsgBox[] = []
-
             if (this.message.length > 0) {
                 let allWidth = this.message.length * this.fontSize
                 this.hackText = this.message
@@ -366,6 +337,5 @@ export default defineComponent({
         },
     },
 })
-
 </script>
 
