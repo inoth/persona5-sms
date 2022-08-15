@@ -16,44 +16,356 @@
 .UserName {
     font-size: 12px;
 }
-
 </style>
 <template>
     <div id="ChatBox">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 90" style="opacity: 1;">
-            <text visibility="hidden">Hello world!</text>
-            <polygon points="-10,-5 62,5 70,55 5,63" transform="translate(30,16)" style="fill: black;"></polygon>
-            <polygon points="0,0 60,10 70,50 10,60" transform="translate(30,16)" style="fill: white;"></polygon>
+        <svg xmlns="http://www.w3.org/2000/svg" :viewBox="`0 0 500 ${viewBoxHeight}`" :style="style">
+
+            <text ref="hackText" visibility="hidden" :style="{ fontSize: fontSize + 'px' }">{{ hackText }}</text>
+
+            <!-- Buddy Avatar -->
+            <polygon v-if="remote" points="-10,-5 62,5 70,55 5,63"
+                :transform="`translate(30,${containerHeight / 2 + messageBox.origin.y - 25})`" style="fill: black" />
+
+            <polygon v-if="remote" points="0,0 60,10 70,50 10,60"
+                :transform="`translate(30,${containerHeight / 2 + messageBox.origin.y - 25})`" style="fill: white" />
+
             <clipPath id="avatarClipPath">
-                <polygon points="2,-10 62,-10 100,42 10,58"></polygon>
+                <polygon points="2,-10 62,-10 100,42 10,58" />
             </clipPath>
-            <image clip-path="url(#avatarClipPath)" x="-10" y="-10" xlink:href="../assets/images/cbimage.png"
-                transform="translate(30,16)" width="80px"></image>
-            <text y="90" x="35" class="UserName">
-                <tspan>{{ name }}</tspan>
+
+            <image clip-path="url(#avatarClipPath)" v-if="remote" x="-10" y="-10" xlink:href="../assets/images/cbimage.png"
+                :transform="`translate(30,${containerHeight / 2 + messageBox.origin.y - 25})`" width="80px" />
+            <text v-if="remote" :transform="`translate(33,${containerHeight / 2 + messageBox.origin.y + 50})`"
+                style="font-size: 12px;fill: #fff;">
+                <tspan>hello world</tspan>
             </text>
-            <polygon points="126,16 266,16 235,71 115,66" class="" style="fill: white;"></polygon>
-            <polygon points="90,53 115,25 118,31 130,26 130,51 110,56 106,51" class="" style="fill: white;"></polygon>
-            <polygon points="97,49 113,31 118,37 130,31 130,46 112,51 108,46" class="" style="fill: black;"></polygon>
-            <polygon points="130,20 251,20 231,67 120,62" class="" style="fill: black;"></polygon>
-            <text y="25.25">
-                <tspan x="145" dy="1.5em">
-                    {{ msg }}
+            <!-- Message Text Container Border -->
+            <polygon :points="containerBorderPoints" :style="{ fill: primaryColor }" :class="{ flipX: !remote }" />
+
+            <!-- Message Text Container Tail Border -->
+            <polygon :points="containerTailBorderPoints" :style="{ fill: primaryColor }" :class="{ flipX: !remote }" />
+
+            <!-- Message Text Container Tail -->
+            <polygon :points="containerTailPoints" :style="{ fill: secondaryColor }" :class="{ flipX: !remote }" />
+
+            <!-- Message Text Container -->
+            <polygon :points="containerPoints" :style="{ fill: secondaryColor }" :class="{ flipX: !remote }" />
+
+            <!-- Message Text -->
+            <text :y="textOffset.y" :width="messageBox.centerWidth" :style="{ fontSize: fontSize + 'px' }">
+                <tspan v-for="line of wrappedMessage()"
+                    :x="remote ? messageBox.origin.x + textOffset.x : 500 - messageBox.origin.x - messageBox.centerWidth"
+                    :dy="`${lineHeight}em`" :style="{ fill: primaryColor }">
+                    {{ line.text }}
                 </tspan>
             </text>
         </svg>
     </div>
 </template>
 
-<script setup lang="ts">
-// import { defineComponent } from "vue";
+<script lang="ts">
+import { defineComponent } from "vue";
+import { MsgBox } from "../types/message";
+// defineProps<{ name: String, message: String, remote: Boolean }>()
 
-defineProps<{ name: string, msg: string, remote: boolean }>()
+const fontSize: Number = 14;
+const lineHeight: Number = 1.5;
 
-// export default defineComponent({
-//     name: "messageBox",
-//     props: { name: string, msg: string, remote: boolean }
-// })
+export default defineComponent({
+    name: "messageBox",
+    props: {
+        name: {
+            type: String,
+            required: true,
+        },
+        message: {
+            type: String,
+            required: true
+        },
+        remote: {
+            // Does the message originate
+            // from a remote source?
+            type: Boolean,
+            default: false
+        },
+        fontSize: {
+            type: Number,
+            default: 14
+        },
+        lineHeight: {
+            type: Number,
+            default: 1.5 // em
+        }
+    },
+    data() {
+        return {
+            hackText: '',
+            style: {
+                opacity: 1
+            }
+        };
+
+
+    },
+    computed: {
+        // ------------------------------------------
+        //         Message Box (remote: true)
+        // ------------------------------------------
+        //
+        //   origin                            x - right width
+        //       \ [ ---- center width ---- ]  |
+        //         x----------------------- x --- x
+        //       / |     <message text>     |   /
+        //     /   |                        | /
+        //   x --- x ---------------------- x
+        //      |
+        //      + - left width
+        //
+        messageBox() {
+            return {
+                origin: {
+                    x: this.remote ? 130 : 60,
+                    y: 20
+                },
+
+                centerWidth: 300,
+                leftWidth: 10,
+                rightWidth: 20,
+                slantHeight: 5,
+                border: {
+                    normal: 4,
+                    left: 15,
+                    right: 35
+                }
+            };
+
+
+        },
+        textOffset() {
+            return {
+                // Left padding.
+                x: 15,
+                // Adjust for top/bottom padding.
+                y: this.messageBox.origin.y + this.fontSize * this.lineHeight / 4
+            };
+
+        },
+        containerPoints() {
+            return [
+                {
+                    x: this.messageBox.origin.x,
+                    y: this.messageBox.origin.y
+                },
+
+                {
+                    x: this.messageBox.origin.x + this.messageBox.centerWidth + this.messageBox.rightWidth,
+                    y: this.messageBox.origin.y
+                },
+
+                {
+                    x: this.messageBox.origin.x + this.messageBox.centerWidth,
+                    y: this.messageBox.origin.y + this.containerHeight + this.messageBox.slantHeight
+                },
+
+                {
+                    x: this.messageBox.origin.x - this.messageBox.leftWidth,
+                    y: this.messageBox.origin.y + this.containerHeight
+                }].
+
+                map(p => `${p.x},${p.y}`).join(' ');
+        },
+        containerBorderPoints() {
+            return [
+                {
+                    x: this.messageBox.origin.x - this.messageBox.border.normal,
+                    y: this.messageBox.origin.y - this.messageBox.border.normal
+                },
+
+                {
+                    x: this.messageBox.origin.x + this.messageBox.centerWidth + this.messageBox.border.right,
+                    y: this.messageBox.origin.y - this.messageBox.border.normal
+                },
+
+                {
+                    x: this.messageBox.origin.x + this.messageBox.centerWidth + this.messageBox.border.normal,
+                    y: this.messageBox.origin.y + this.containerHeight + this.messageBox.border.normal + this.messageBox.slantHeight
+                },
+
+                {
+                    x: this.messageBox.origin.x - this.messageBox.border.left,
+                    y: this.messageBox.origin.y + this.containerHeight + this.messageBox.border.normal
+                }].
+
+                map(p => `${p.x},${p.y}`).join(' ');
+        },
+        containerTailPoints() {
+            return [
+                {
+                    x: this.messageBox.origin.x - 33,
+                    y: this.messageBox.origin.y + this.containerHeight / 2 + 8
+                },
+
+                {
+                    x: this.messageBox.origin.x - 17,
+                    y: this.messageBox.origin.y + this.containerHeight / 2 - 10
+                },
+
+                {
+                    x: this.messageBox.origin.x - 12,
+                    y: this.messageBox.origin.y + this.containerHeight / 2 - 4
+                },
+
+                {
+                    x: this.messageBox.origin.x,
+                    y: this.messageBox.origin.y + this.containerHeight / 2 - 10
+                },
+
+                {
+                    x: this.messageBox.origin.x,
+                    y: this.messageBox.origin.y + this.containerHeight / 2 + 5
+                },
+
+                {
+                    x: this.messageBox.origin.x - 18,
+                    y: this.messageBox.origin.y + this.containerHeight / 2 + 10
+                },
+
+                {
+                    x: this.messageBox.origin.x - 22,
+                    y: this.messageBox.origin.y + this.containerHeight / 2 + 5
+                }].
+
+                map(p => `${p.x},${p.y}`).join(' ');
+        },
+        containerTailBorderPoints() {
+            return [
+                {
+                    x: this.messageBox.origin.x - 40,
+                    y: this.messageBox.origin.y + this.containerHeight / 2 + 12
+                },
+
+                {
+                    x: this.messageBox.origin.x - 15,
+                    y: this.messageBox.origin.y + this.containerHeight / 2 - 16
+                },
+
+                {
+                    x: this.messageBox.origin.x - 12,
+                    y: this.messageBox.origin.y + this.containerHeight / 2 - 10
+                },
+
+                {
+                    x: this.messageBox.origin.x,
+                    y: this.messageBox.origin.y + this.containerHeight / 2 - 15
+                },
+
+                {
+                    x: this.messageBox.origin.x,
+                    y: this.messageBox.origin.y + this.containerHeight / 2 + 10
+                },
+
+                {
+                    x: this.messageBox.origin.x - 20,
+                    y: this.messageBox.origin.y + this.containerHeight / 2 + 15
+                },
+
+                {
+                    x: this.messageBox.origin.x - 24,
+                    y: this.messageBox.origin.y + this.containerHeight / 2 + 10
+                }].
+
+                map(p => `${p.x},${p.y}`).join(' ');
+        },
+        containerHeight() {
+            // Compute how much vertical space the message text takes up by
+            // multiplying the line height by the number of lines in the message.
+            let height = this.fontSize * this.lineHeight * this.wrappedMessage().length;
+            // let height = this.fontSize * this.lineHeight * this.wrappedMessage;
+            // Now, we need to add some extra bottom padding otherwise the
+            // descenders (the part of the characters beneath the baseline)
+            // will get clipped. I don't know the exact height of the descender,
+            // but I figure that 1/2 em should be fine. And then we'll add another
+            // 1/4 em for top and bottom paddings (1/2 em in total).
+            //
+            //   ---
+            //    |   top padding (1/4 em)
+            //   ---
+            //    |   text height (line height * # of lines)
+            //   ---
+            //    |   descender padding (1/2 em)
+            //   ---
+            // .  |   slanted bottom edge (this.messageBox.slantHeight)
+            //   ---
+            //    |   bottom padding (1/4 em)
+            //   ---
+            //
+            return height + this.fontSize * this.lineHeight;
+        },
+        viewBoxHeight() {
+            //
+            //   ---
+            //    |   border width
+            //   ---
+            //    |   container height
+            //   ---
+            //    |   border width
+            //   ---
+            //
+            return this.containerHeight + this.messageBox.origin.y * 2 + 10;
+        },
+        primaryColor() {
+            return this.remote ? 'white' : 'black';
+        },
+        secondaryColor() {
+            return this.remote ? 'black' : 'white';
+        }
+    },
+    methods: {
+        CheckWitdh(item: string) {
+            const regex = /\w+/gm;
+            if (regex.exec(item) != null) {
+                return 0.3
+            }
+            return 1.1
+        },
+        wrappedMessage(): MsgBox[] {
+            // Kind of a hacky way of implementing word wrapping
+            // on SVG <text> elements. Not quite sure how to go
+            // about determining the bounding box of some text,
+            // without actually rendering it on the DOM.
+            let lines: MsgBox[] = []
+
+            if (this.message.length > 0) {
+                let allWidth = this.message.length * this.fontSize
+                this.hackText = this.message
+                if (allWidth > this.messageBox.centerWidth) {
+                    // let lineHeight = Math.ceil(allWidth / this.messageBox.centerWidth)
+                    let line = [];
+                    let tmp_width = 0;
+                    for (let index = 0; index < this.message.length; index++) {
+                        let item = this.message[index];
+                        line.push(item)
+                        tmp_width += this.CheckWitdh(item)
+                        if (Math.ceil(tmp_width * this.fontSize) > this.messageBox.centerWidth) {
+                            lines.push({ text: line.join('') })
+                            line = [];
+                            tmp_width = 0;
+                        }
+                    }
+                    lines.push({ text: line.join('') })
+                    return lines
+                } else {
+                    this.messageBox.centerWidth = allWidth + this.textOffset.x * 2;
+                    lines.push({ text: this.message })
+                    return lines
+                }
+            } else {
+                return lines
+            }
+        },
+    },
+})
 
 </script>
 

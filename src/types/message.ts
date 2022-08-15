@@ -5,3 +5,7 @@ export default interface MessageBody {
     msgType: string;
     msg: string;
 }
+
+export interface MsgBox {
+    text: string
+}
