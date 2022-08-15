@@ -10,9 +10,6 @@
 
 <template>
     <div id="chatbox">
-        <!-- <MessageBox name="inoth" message="12312312" remote />
-        <MessageBox name="inoth" message="3213213" />
-        <MessageBox name="inoth" message="0192732" remote /> -->
         <MessageBox v-for="msg of messageList" :remote="msg.sourceId != user.id" :name="msg.sourceName"
             :icon="msg.icon" :message="msg.msg" />
     </div>
