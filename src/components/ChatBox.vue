@@ -61,13 +61,13 @@ export default defineComponent({
                 {
                     icon: "src/assets/images/1660536014391.jpg",
                     sourceId: "abc143",
-                    sourceName: "inoth3",
+                    sourceName: "inoth4",
                     msg: "那么， 经过上述讨论， 经过上述讨论， 问题的关键究竟为何？ 这样看来， 塞涅卡曾经提到过，真正的人生，只有在经过艰难卓绝的斗争之后才能实现。",
                 },
                 {
                     icon: "src/assets/images/images.jpeg",
                     sourceId: "abc114",
-                    sourceName: "inoth3",
+                    sourceName: "inoth5",
                     msg: "既然如此， 了解清楚机器人到底是一种怎么样的存在，是解决一切问题的关键。 要想清楚，机器人，到底是一种怎么样的存在。 对我个人而言，机器人不仅仅是一个重大的事件，还可能会改变我的人生。 富兰克林在不经意间这样说过，读书是易事，思索是难事，但两者缺一，便全无用处。我希望诸位也能好好地体会这句话。",
                 },
                 {
