@@ -1,6 +1,6 @@
 <style scoped>
 #chatboxbg {
-    background-image: url("src/assets/images/bgimgs/chatbox.svg");
+    background-image: url("src/assets/images/bgimgs/chatbox.1.svg");
     background-repeat: no-repeat;
     background-size: 100% 100%;
     width: 1100px;
