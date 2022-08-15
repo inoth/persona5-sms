@@ -67,10 +67,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { MsgBox } from "../types/message";
-// defineProps<{ name: String, message: String, remote: Boolean }>()
-
-const fontSize: Number = 14;
-const lineHeight: Number = 1.5;
 
 export default defineComponent({
     name: "messageBox",
