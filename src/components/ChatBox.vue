@@ -96,7 +96,6 @@ export default defineComponent({
                 id: 'abc123',
                 name: 'inoth',
             } as LoginResp,
-            // msgBoxHight: 0,
             message: '',
             messageList: [
                 {
@@ -117,9 +116,6 @@ export default defineComponent({
         };
     },
     methods: {
-        // getBoxHight(val: number) {
-        //     this.msgBoxHight = val
-        // },
         setMessage() {
             if (!this.message) {
                 return

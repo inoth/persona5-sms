@@ -102,8 +102,7 @@ export default defineComponent({
     },
     data() {
         return {
-            // BoxHeight: 0 as number,
-            enfontSize: .5,
+            enfontSize: .55,
             cnfontSize: 1.1,
             hackText: '' as string,
         };
@@ -285,7 +284,6 @@ export default defineComponent({
             //   ---
             //
             let boxHeight = this.containerHeight + this.messageBox.origin.y * 2 + 10;
-            // this.$emit('msgBoxHight', boxHeight)
             return boxHeight
         },
         primaryColor() {
