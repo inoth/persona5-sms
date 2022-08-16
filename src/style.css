@@ -136,8 +136,9 @@ textarea {
 
 html {
   padding: 1px;
+  padding-bottom: 0;
   /* background-color: #00ff1e; */
-  background-image: url("src/assets/images/bgimgs/wallhaven-v935ep.png");
+  background-image: url("src/assets/images/bgimgs/persona5.jpg");
   background-repeat: no-repeat;
   background-size: 100% 100%;
   min-width: 800px;

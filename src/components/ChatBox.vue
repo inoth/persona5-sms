@@ -18,10 +18,10 @@
     overflow-x: hidden;
     overflow-y: scroll;
     max-width: 500px;
-    height: 700px;
+    height: 770px;
     margin-left: 17%;
     min-width: 500px;
-    margin-top: 18%;
+    margin-top: 13%;
     border-bottom: #000 solid 2px;
 }
 
