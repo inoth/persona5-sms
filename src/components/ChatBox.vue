@@ -63,7 +63,7 @@
                 :icon="msg.icon" :message="msg.msg" />
         </div>
         <div id="msg-input">
-            <input type="text" v-model="message" >
+            <input type="text" v-model="message" v-on:keydown.enter="setMessage">
             <div v-on:click="setMessage()" id="sendbtn">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 90" style="height: 3em;width: 360pt;">
                     <polygon points="126,16 266,16 235,71 115,66" class="" style="fill: white;"></polygon>
