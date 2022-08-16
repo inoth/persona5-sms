@@ -1,23 +1,35 @@
 <style scoped>
-#chatbox {
-    background-image: url("src/assets/images/bgimgs/chatbox.png");
+#chatboxbg {
+    background-image: url("src/assets/images/bgimgs/chatbox.1.svg");
     background-repeat: no-repeat;
-    background-size: 100%;
-    width: 1920px;
-    min-height: 800px;
-    max-width: 100%;
-    max-height: 100%;
-    height: 100%;
-    padding-left: 35%;
-    padding-right: 35%;
-    padding-top: 15%;
+    background-size: 100% 100%;
+    width: 1100px;
+    min-height: 1000px;
+    max-width: 1080px;
+    max-height: 1080px;
+    overflow:visible;
+}
+
+#chatbox {
+    overflow-x: hidden;
+    overflow-y: scroll;
+    max-width: 500px;
+    height: 800px;
+    margin-left: 17%;
+    min-width: 500px;
+}
+
+#chatbox::-webkit-scrollbar {
+    display: none;
 }
 </style>
 
 <template>
-    <div id="chatbox">
-        <MessageBox v-for="msg of messageList" :remote="msg.sourceId != user.id" :name="msg.sourceName" :icon="msg.icon"
-            :message="msg.msg" />
+    <div id="chatboxbg">
+        <div id="chatbox">
+            <MessageBox v-for="msg of messageList" :remote="msg.sourceId != user.id" :name="msg.sourceName"
+                :icon="msg.icon" :message="msg.msg" />
+        </div>
     </div>
     <div>
         <input type="text" v-model="message"><button v-on:click="setMessage()">send</button>
@@ -41,6 +53,7 @@ export default defineComponent({
                 id: 'abc123',
                 name: 'inoth',
             } as LoginResp,
+            // msgBoxHight: 0,
             message: '',
             messageList: [
                 {
@@ -54,12 +67,150 @@ export default defineComponent({
                     sourceId: "abc123",
                     sourceName: "inoth2",
                     msg: "test",
-                }
+                },
+                {
+                    icon: "src/assets/images/icon/cbimage.png",
+                    sourceId: "abc112",
+                    sourceName: "inoth1",
+                    msg: "test",
+                },
+                {
+                    icon: "src/assets/images/icon/1660535970309.png",
+                    sourceId: "abc123",
+                    sourceName: "inoth2",
+                    msg: "test",
+                },
+                {
+                    icon: "src/assets/images/icon/cbimage.png",
+                    sourceId: "abc112",
+                    sourceName: "inoth1",
+                    msg: "test",
+                },
+                {
+                    icon: "src/assets/images/icon/1660535970309.png",
+                    sourceId: "abc123",
+                    sourceName: "inoth2",
+                    msg: "test",
+                },
+                {
+                    icon: "src/assets/images/icon/cbimage.png",
+                    sourceId: "abc112",
+                    sourceName: "inoth1",
+                    msg: "test",
+                },
+                {
+                    icon: "src/assets/images/icon/1660535970309.png",
+                    sourceId: "abc123",
+                    sourceName: "inoth2",
+                    msg: "test",
+                },
+                {
+                    icon: "src/assets/images/icon/cbimage.png",
+                    sourceId: "abc112",
+                    sourceName: "inoth1",
+                    msg: "test",
+                },
+                {
+                    icon: "src/assets/images/icon/1660535970309.png",
+                    sourceId: "abc123",
+                    sourceName: "inoth2",
+                    msg: "test",
+                },
+                {
+                    icon: "src/assets/images/icon/cbimage.png",
+                    sourceId: "abc112",
+                    sourceName: "inoth1",
+                    msg: "test",
+                },
+                {
+                    icon: "src/assets/images/icon/1660535970309.png",
+                    sourceId: "abc123",
+                    sourceName: "inoth2",
+                    msg: "test",
+                },
+                {
+                    icon: "src/assets/images/icon/cbimage.png",
+                    sourceId: "abc112",
+                    sourceName: "inoth1",
+                    msg: "test",
+                },
+                {
+                    icon: "src/assets/images/icon/1660535970309.png",
+                    sourceId: "abc123",
+                    sourceName: "inoth2",
+                    msg: "test",
+                },
+                {
+                    icon: "src/assets/images/icon/cbimage.png",
+                    sourceId: "abc112",
+                    sourceName: "inoth1",
+                    msg: "test",
+                },
+                {
+                    icon: "src/assets/images/icon/1660535970309.png",
+                    sourceId: "abc123",
+                    sourceName: "inoth2",
+                    msg: "test",
+                },
+                {
+                    icon: "src/assets/images/icon/cbimage.png",
+                    sourceId: "abc112",
+                    sourceName: "inoth1",
+                    msg: "test",
+                },
+                {
+                    icon: "src/assets/images/icon/1660535970309.png",
+                    sourceId: "abc123",
+                    sourceName: "inoth2",
+                    msg: "test",
+                },
+                {
+                    icon: "src/assets/images/icon/cbimage.png",
+                    sourceId: "abc112",
+                    sourceName: "inoth1",
+                    msg: "test",
+                },
+                {
+                    icon: "src/assets/images/icon/1660535970309.png",
+                    sourceId: "abc123",
+                    sourceName: "inoth2",
+                    msg: "test",
+                },
+                {
+                    icon: "src/assets/images/icon/cbimage.png",
+                    sourceId: "abc112",
+                    sourceName: "inoth1",
+                    msg: "test",
+                },
+                {
+                    icon: "src/assets/images/icon/1660535970309.png",
+                    sourceId: "abc123",
+                    sourceName: "inoth2",
+                    msg: "test",
+                },
+                {
+                    icon: "src/assets/images/icon/cbimage.png",
+                    sourceId: "abc112",
+                    sourceName: "inoth1",
+                    msg: "test",
+                },
+                {
+                    icon: "src/assets/images/icon/1660535970309.png",
+                    sourceId: "abc123",
+                    sourceName: "inoth2",
+                    msg: "12321312312321321",
+                },
             ] as MessageBody[]
         };
     },
     methods: {
+        // getBoxHight(val: number) {
+        //     this.msgBoxHight = val
+        // },
         setMessage() {
+            if (!this.message) {
+                return
+            }
             let r = Math.floor((Math.random() * 10) + 1)
             let msg = {
                 icon: "src/assets/images/icon/cbimage.png",
@@ -69,6 +220,15 @@ export default defineComponent({
             } as MessageBody
             this.messageList.push(msg)
             this.message = ''
+            this.scrollToBot()
+        },
+        async scrollToBot() {
+            setTimeout(() => {
+                let chatbox = document.getElementById('chatbox') as HTMLElement
+                if (chatbox as HTMLElement) {
+                    chatbox.scrollTop = chatbox.scrollHeight
+                }
+            }, 50);
         }
     },
     watch: {}

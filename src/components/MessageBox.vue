@@ -6,7 +6,7 @@
     transform-origin: center;
 }
 
-#ChatBox {
+.MsgBox {
     width: 100%;
     /* height: 100px; */
     font-size: 14px;
@@ -18,7 +18,7 @@
 }
 </style>
 <template>
-    <div id="ChatBox">
+    <div class="MsgBox">
         <svg xmlns="http://www.w3.org/2000/svg" :viewBox="`0 0 500 ${viewBoxHeight}`">
 
             <text ref="hackText" visibility="hidden" :style="{ fontSize: fontSize + 'px' }">{{ hackText }}</text>
@@ -65,6 +65,8 @@
 </template>
 
 <script lang="ts">
+import { computed } from "@vue/reactivity";
+import { propsToAttrMap } from "@vue/shared";
 import { defineComponent } from "vue";
 import { MsgBox } from "../types/message";
 
@@ -100,8 +102,9 @@ export default defineComponent({
     },
     data() {
         return {
-            enfontSize : .5,
-            cnfontSize : 1.1,
+            // BoxHeight: 0 as number,
+            enfontSize: .5,
+            cnfontSize: 1.1,
             hackText: '' as string,
         };
     },
@@ -125,7 +128,6 @@ export default defineComponent({
                     x: this.remote ? 130 : 60,
                     y: 20
                 },
-
                 centerWidth: 300,
                 leftWidth: 10,
                 rightWidth: 20,
@@ -282,7 +284,9 @@ export default defineComponent({
             //    |   border width
             //   ---
             //
-            return this.containerHeight + this.messageBox.origin.y * 2 + 10;
+            let boxHeight = this.containerHeight + this.messageBox.origin.y * 2 + 10;
+            // this.$emit('msgBoxHight', boxHeight)
+            return boxHeight
         },
         primaryColor() {
             return this.remote ? 'white' : 'black';
