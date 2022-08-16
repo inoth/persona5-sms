@@ -1,26 +1,58 @@
 <style scoped>
+@import url("../assets/css/normalize.min.css");
+
 #chatboxbg {
-    background-image: url("src/assets/images/bgimgs/chatbox.1.svg");
+    background-image: url("src/assets/images/bgimgs/chatbox.png");
     background-repeat: no-repeat;
     background-size: 100% 100%;
-    width: 1100px;
-    min-height: 1000px;
-    max-width: 1080px;
-    max-height: 1080px;
-    overflow:visible;
+    width: 1300px;
+    /* max-width: 1300px;
+    min-width: 1300px; */
+    min-height: 900px;
+    /* overflow:visible; */
+    height: auto;
+    padding: 1px;
 }
 
 #chatbox {
     overflow-x: hidden;
     overflow-y: scroll;
     max-width: 500px;
-    height: 800px;
+    height: 700px;
     margin-left: 17%;
     min-width: 500px;
+    margin-top: 18%;
+    border-bottom: #000 solid 2px;
 }
 
 #chatbox::-webkit-scrollbar {
     display: none;
+}
+
+#msg-input {
+    background-color: #c30f00;
+    width: 500px;
+    margin-left: 17%;
+    height: 36px;
+}
+
+#msg-input>input {
+    width: 70%;
+    height: 36px;
+    border-bottom: #000 solid 2px;
+    background-color: transparent;
+    float: left;
+}
+
+#msg-input>button {
+    background-color: #fff;
+    border: #000 solid 1px;
+}
+
+#sendbtn {
+    width: 30%;
+    overflow: hidden;
+    height: 36px;
 }
 </style>
 
@@ -30,9 +62,20 @@
             <MessageBox v-for="msg of messageList" :remote="msg.sourceId != user.id" :name="msg.sourceName"
                 :icon="msg.icon" :message="msg.msg" />
         </div>
-    </div>
-    <div>
-        <input type="text" v-model="message"><button v-on:click="setMessage()">send</button>
+        <div id="msg-input">
+            <input type="text" v-model="message" >
+            <div v-on:click="setMessage()" id="sendbtn">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 90" style="height: 3em;width: 360pt;">
+                    <polygon points="126,16 266,16 235,71 115,66" class="" style="fill: white;"></polygon>
+                    <polygon points="130,20 251,20 231,67 120,62" class="" style="fill: black;"></polygon>
+                    <text y="25.25" style="font-size: 18px; text-align:center;">
+                        <tspan x="165" dy="1.5em" style="fill: white;">
+                            Send
+                        </tspan>
+                    </text>
+                </svg>
+            </div>
+        </div>
     </div>
 </template>
 

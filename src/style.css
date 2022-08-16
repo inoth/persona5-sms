@@ -134,10 +134,20 @@ textarea {
   *zoom: 1;
 }
 
+html {
+  padding: 1px;
+  /* background-color: #00ff1e; */
+  background-image: url("src/assets/images/bgimgs/wallhaven-v935ep.png");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  min-width: 800px;
+  overflow: hidden;
+}
+
 #app {
   width: 100%;
   height: 100%;
-  background-color: #ece933;
   text-align: center;
   text-align: -webkit-center;
+  overflow: hidden;
 }
