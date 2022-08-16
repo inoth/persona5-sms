@@ -104,145 +104,15 @@ export default defineComponent({
                     sourceId: "abc112",
                     sourceName: "inoth1",
                     msg: "test",
+                    msgType: "user"
                 },
                 {
                     icon: "src/assets/images/icon/1660535970309.png",
                     sourceId: "abc123",
                     sourceName: "inoth2",
                     msg: "test",
-                },
-                {
-                    icon: "src/assets/images/icon/cbimage.png",
-                    sourceId: "abc112",
-                    sourceName: "inoth1",
-                    msg: "test",
-                },
-                {
-                    icon: "src/assets/images/icon/1660535970309.png",
-                    sourceId: "abc123",
-                    sourceName: "inoth2",
-                    msg: "test",
-                },
-                {
-                    icon: "src/assets/images/icon/cbimage.png",
-                    sourceId: "abc112",
-                    sourceName: "inoth1",
-                    msg: "test",
-                },
-                {
-                    icon: "src/assets/images/icon/1660535970309.png",
-                    sourceId: "abc123",
-                    sourceName: "inoth2",
-                    msg: "test",
-                },
-                {
-                    icon: "src/assets/images/icon/cbimage.png",
-                    sourceId: "abc112",
-                    sourceName: "inoth1",
-                    msg: "test",
-                },
-                {
-                    icon: "src/assets/images/icon/1660535970309.png",
-                    sourceId: "abc123",
-                    sourceName: "inoth2",
-                    msg: "test",
-                },
-                {
-                    icon: "src/assets/images/icon/cbimage.png",
-                    sourceId: "abc112",
-                    sourceName: "inoth1",
-                    msg: "test",
-                },
-                {
-                    icon: "src/assets/images/icon/1660535970309.png",
-                    sourceId: "abc123",
-                    sourceName: "inoth2",
-                    msg: "test",
-                },
-                {
-                    icon: "src/assets/images/icon/cbimage.png",
-                    sourceId: "abc112",
-                    sourceName: "inoth1",
-                    msg: "test",
-                },
-                {
-                    icon: "src/assets/images/icon/1660535970309.png",
-                    sourceId: "abc123",
-                    sourceName: "inoth2",
-                    msg: "test",
-                },
-                {
-                    icon: "src/assets/images/icon/cbimage.png",
-                    sourceId: "abc112",
-                    sourceName: "inoth1",
-                    msg: "test",
-                },
-                {
-                    icon: "src/assets/images/icon/1660535970309.png",
-                    sourceId: "abc123",
-                    sourceName: "inoth2",
-                    msg: "test",
-                },
-                {
-                    icon: "src/assets/images/icon/cbimage.png",
-                    sourceId: "abc112",
-                    sourceName: "inoth1",
-                    msg: "test",
-                },
-                {
-                    icon: "src/assets/images/icon/1660535970309.png",
-                    sourceId: "abc123",
-                    sourceName: "inoth2",
-                    msg: "test",
-                },
-                {
-                    icon: "src/assets/images/icon/cbimage.png",
-                    sourceId: "abc112",
-                    sourceName: "inoth1",
-                    msg: "test",
-                },
-                {
-                    icon: "src/assets/images/icon/1660535970309.png",
-                    sourceId: "abc123",
-                    sourceName: "inoth2",
-                    msg: "test",
-                },
-                {
-                    icon: "src/assets/images/icon/cbimage.png",
-                    sourceId: "abc112",
-                    sourceName: "inoth1",
-                    msg: "test",
-                },
-                {
-                    icon: "src/assets/images/icon/1660535970309.png",
-                    sourceId: "abc123",
-                    sourceName: "inoth2",
-                    msg: "test",
-                },
-                {
-                    icon: "src/assets/images/icon/cbimage.png",
-                    sourceId: "abc112",
-                    sourceName: "inoth1",
-                    msg: "test",
-                },
-                {
-                    icon: "src/assets/images/icon/1660535970309.png",
-                    sourceId: "abc123",
-                    sourceName: "inoth2",
-                    msg: "test",
-                },
-                {
-                    icon: "src/assets/images/icon/cbimage.png",
-                    sourceId: "abc112",
-                    sourceName: "inoth1",
-                    msg: "test",
-                },
-                {
-                    icon: "src/assets/images/icon/1660535970309.png",
-                    sourceId: "abc123",
-                    sourceName: "inoth2",
-                    msg: "12321312312321321",
-                },
+                    msgType: "user"
+                }
             ] as MessageBody[]
         };
     },
@@ -260,6 +130,7 @@ export default defineComponent({
                 sourceId: r >= 5 ? this.user.id : '123',
                 sourceName: this.user.name,
                 msg: this.message,
+                msgType: 'user',
             } as MessageBody
             this.messageList.push(msg)
             this.message = ''
