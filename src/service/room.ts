@@ -1,12 +1,28 @@
 import request from '../request'
 
 class RoomService {
-    joinRoom(roomid: string): Promise<any> {
-        roomid = 'default-room'
+    createRoom(title: string): Promise<any> {
         let params = {
-            "roomid": roomid
+            "title": title,
+            "desc": "",
+            "maxUser": 10
         }
-        return request.post("/join/room", params)
+        return request.post("/room/create", params)
+    }
+    closeRoom(rid: string): Promise<any> {
+        let params = {
+            rid: rid
+        }
+        return request.post("/room/close", params)
+    }
+    exitRoom(rid: string): Promise<any> {
+        let params = {
+            rid: rid
+        }
+        return request.post("/room/exit", params)
+    }
+    joinRoom(rid: string) {
+        // 采用websocket
     }
 }
 

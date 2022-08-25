@@ -3,7 +3,7 @@ import request from '../request'
 class LoginService {
     login(name: string): Promise<any> {
         let params = {
-            "name": name
+            "userName": name
         }
         return request.post("/login", params)
     }

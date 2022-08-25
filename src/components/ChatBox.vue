@@ -80,33 +80,43 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, getCurrentInstance, onMounted, ref } from "vue";
 import LoginResp from '../types/login';
 import MessageBox from './MessageBox.vue'
 import MessageBody from "../types/message";
+import newSocket from "../websocket";
 
 export default defineComponent({
     name: "add-login",
     components: {
         MessageBox
     },
+    props: {
+        rid: {
+            type: String,
+            required: true,
+        }
+    },
     data() {
         return {
+            wsUrl: "ws://localhost:9978/chat/",
+            socket: {} as WebSocket,
             user: {
                 id: 'abc123',
                 name: 'inoth',
+                icon: 'src/assets/images/icon/001.png'
             } as LoginResp,
             message: '',
             messageList: [
                 {
-                    icon: "src/assets/images/icon/cbimage.png",
+                    icon: "src/assets/images/icon/001.png",
                     sourceId: "abc112",
                     sourceName: "inoth1",
                     msg: "test",
                     msgType: "user"
                 },
                 {
-                    icon: "src/assets/images/icon/1660535970309.png",
+                    icon: "src/assets/images/icon/001.png",
                     sourceId: "abc123",
                     sourceName: "inoth2",
                     msg: "test",
@@ -115,21 +125,34 @@ export default defineComponent({
             ] as MessageBody[]
         };
     },
+    mounted() {
+        this.getSocketData()
+    },
     methods: {
+        getSocketData() {
+            newSocket(this.wsUrl + this.rid, null, this.onMessage)
+        },
+        onMessage(msg: any, ws: WebSocket) {
+            console.log(msg)
+            if (this.socket == null) {
+                this.socket = ws
+            }
+            // this.messageList.push(msg)
+        },
         setMessage() {
             if (!this.message) {
                 return
             }
-            let r = Math.floor((Math.random() * 10) + 1)
             let msg = {
-                icon: "src/assets/images/icon/cbimage.png",
-                sourceId: r >= 5 ? this.user.id : '123',
+                icon: this.user.icon,
+                sourceId: this.user.id,
                 sourceName: this.user.name,
                 msg: this.message,
                 msgType: 'user',
             } as MessageBody
-            this.messageList.push(msg)
+            // this.messageList.push(msg)
             this.message = ''
+            this.socket.send(JSON.stringify(msg))
             this.scrollToBot()
         },
         async scrollToBot() {
@@ -140,8 +163,7 @@ export default defineComponent({
                 }
             }, 50);
         }
-    },
-    watch: {}
+    }
 })
 
 </script>
