@@ -91,9 +91,15 @@ export default defineComponent({
     components: {
         MessageBox
     },
+    props: {
+        rid: {
+            type: String,
+            required: true,
+        }
+    },
     data() {
         return {
-            wsUrl: "",
+            wsUrl: "ws://localhost:9978/chat/",
             socket: {} as WebSocket,
             user: {
                 id: 'abc123',
@@ -119,24 +125,12 @@ export default defineComponent({
             ] as MessageBody[]
         };
     },
-    setup() {
-        // const socket = ref(WebSocket)
-        // onMounted(() => {
-        //     console.log("shabi vue")
-
-        // })
-
-
-    },
-    // created() {
-
-    // },
     mounted() {
         this.getSocketData()
     },
     methods: {
         getSocketData() {
-            newSocket(this.wsUrl, null, this.onMessage)
+            newSocket(this.wsUrl + this.rid, null, this.onMessage)
         },
         onMessage(msg: any, ws: WebSocket) {
             console.log(msg)
