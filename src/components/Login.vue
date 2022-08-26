@@ -24,7 +24,7 @@
 import { defineComponent } from "vue";
 import LoginResp from '../types/login';
 import LoginService from '../service/login'
-import cookies from "../cookie";
+import { getCookie } from "../cookie";
 // import router from "../router";
 import { useRouter } from "vue-router";
 
@@ -34,7 +34,7 @@ export default defineComponent({
     data() {
         return {
             userName: '' as string,
-            // router: useRouter()
+            router: useRouter()
         };
     },
     methods: {
@@ -45,13 +45,12 @@ export default defineComponent({
                     // 跳转到 chatbox
                     if (resp.status == 200) {
                         if (resp.data.code == 200) {
-                            // let token = this.$cookies.get("Authorization")
-                            // let token = cookies.getCookie("Authorization")
-                            // console.log(token)
+                            let token = resp.headers["authorization"]
+                            console.log(token)
+                            localStorage.setItem("Authorization", token ? token : "")
+                            console.log(resp.data.data)
                             localStorage.setItem("UserInfo", JSON.stringify(resp.data.data))
-                            // const router = useRouter()
-                            // router.push("/chat")
-                            this.$router.push({ path: "/chat" })
+                            this.router.push("/chat")
                         }
                     }
                 }).catch(err => {

@@ -84,7 +84,6 @@ import { defineComponent, getCurrentInstance, onMounted, ref } from "vue";
 import LoginResp from '../types/login';
 import MessageBox from './MessageBox.vue'
 import MessageBody from "../types/message";
-import newSocket from "../websocket";
 import { wsUrl } from "../request";
 
 export default defineComponent({
@@ -93,16 +92,17 @@ export default defineComponent({
         MessageBox
     },
     props: {
-        rid: {
-            type: String,
-            required: true,
-        }
+        // rid: {
+        //     type: String,
+        //     required: true,
+        // }
     },
     data() {
         return {
             roomId: "05e32454",
+            connected: false,
             wsUrl: wsUrl,
-            socket: {} as WebSocket,
+            instance: {} as WebSocket,
             user: {
                 id: 'abc123',
                 name: 'inoth',
@@ -128,31 +128,74 @@ export default defineComponent({
         };
     },
     mounted() {
-        let userInfo = localStorage.getItem("UserInfo")
-        if (userInfo == '' || userInfo == null) {
-            console.error("无效用户信息")
-            return
-        }
-        this.user = JSON.parse(userInfo)
         this.getSocketData()
+        console.log("ws对象: ", this.instance)
     },
     methods: {
         getSocketData() {
-            // let token = localStorage.getItem('Authorization');
-            // if (token === null || token === '') {
-            //     console.log(`token失效: [${token}]`)
-            //     return
-            // }
-            newSocket(this.wsUrl + this.roomId, '', this.initSocket, this.onMessage)
-        },
-        initSocket(ws: WebSocket) {
-            if (this.socket == null) {
-                this.socket = ws
+            let userInfo = localStorage.getItem("UserInfo")
+            if (userInfo == '' || userInfo == null) {
+                console.error("无效用户信息")
+                return
+            }
+            this.user = JSON.parse(userInfo)
+            console.log(this.user)
+
+            let token = localStorage.getItem('Authorization');
+            if (token === null || token === '') {
+                console.log(`token失效: [${token}]`)
+                return
+            }
+            // this.socket = new WebSocket(this.wsUrl + this.roomId, token);
+
+            // this.socket.onopen = this.onOpen
+
+            // this.socket.onmessage = this.onMessage
+
+            // this.socket.onclose = this.onClose
+
+            // this.socket.onerror = function (err) {
+            //     console.error('Socket 发生了错误,请刷新页面');
+            // };
+            try {
+                if (this.connected === false) {
+                    var wsInstance = new WebSocket(this.wsUrl + this.roomId, token);
+                    // var wsInstance = new WebSocket((window.location.protocol === 'https:' ? 'wss' : 'ws') + "://" + window.location.host + "/ws/chat/" + this.roomId, token);
+                    wsInstance.onopen = this.onOpen
+
+                    wsInstance.onclose = this.onClose
+
+                    wsInstance.onerror = (ev) => {
+                        console.warn(ev)
+                    }
+                    wsInstance.onmessage = this.onMessage
+
+                    this.instance = wsInstance;
+                } else {
+                    this.instance.close(1000, 'Active closure of the user')
+                }
+            } catch (err) {
+                console.warn(err)
             }
         },
-        onMessage(msg: any) {
-            console.log(msg)
-            // this.messageList.push(msg)
+        onOpen(ev: any) {
+            console.warn(ev)
+            this.connected = true
+            let msg = {
+                icon: this.user.icon,
+                sourceId: this.user.id,
+                sourceName: this.user.name,
+                msg: "init",
+                msgType: 'user',
+            } as MessageBody
+            this.instance.send(JSON.stringify(msg))
+        },
+        onClose(ev: any) {
+            console.warn(ev)
+            this.connected = false;
+        },
+        onMessage(msg: MessageEvent<any>) {
+            console.log("返回消息:", msg)
         },
         setMessage() {
             if (!this.message) {
@@ -167,7 +210,7 @@ export default defineComponent({
             } as MessageBody
             // this.messageList.push(msg)
             this.message = ''
-            this.socket.send(JSON.stringify(msg))
+            this.instance.send(JSON.stringify(msg))
             this.scrollToBot()
         },
         async scrollToBot() {

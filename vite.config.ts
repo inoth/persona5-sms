@@ -10,13 +10,16 @@ export default defineConfig({
         ws: false,
         target: "http://localhost:8888/api",
         changeOrigin: true,
+        // headers: {
+        //   "Access-Control-Allow-Origin": "*"
+        // },
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
-      "/api/chat": {
+      "/ws": {
         ws: false,
-        target: "http://localhost:8889/api/chat",
+        target: "ws://localhost:8889/ws",
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api\/chat/, ""),
+        rewrite: (path) => path.replace(/^\/ws/, ""),
       },
     },
   },
