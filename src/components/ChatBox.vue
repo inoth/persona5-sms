@@ -85,6 +85,7 @@ import LoginResp from '../types/login';
 import MessageBox from './MessageBox.vue'
 import MessageBody from "../types/message";
 import newSocket from "../websocket";
+import { wsUrl } from "../request";
 
 export default defineComponent({
     name: "add-login",
@@ -99,7 +100,8 @@ export default defineComponent({
     },
     data() {
         return {
-            wsUrl: "ws://localhost:9978/chat/",
+            roomId: "05e32454",
+            wsUrl: wsUrl,
             socket: {} as WebSocket,
             user: {
                 id: 'abc123',
@@ -126,17 +128,30 @@ export default defineComponent({
         };
     },
     mounted() {
+        let userInfo = localStorage.getItem("UserInfo")
+        if (userInfo == '' || userInfo == null) {
+            console.error("无效用户信息")
+            return
+        }
+        this.user = JSON.parse(userInfo)
         this.getSocketData()
     },
     methods: {
         getSocketData() {
-            newSocket(this.wsUrl + this.rid, null, this.onMessage)
+            // let token = localStorage.getItem('Authorization');
+            // if (token === null || token === '') {
+            //     console.log(`token失效: [${token}]`)
+            //     return
+            // }
+            newSocket(this.wsUrl + this.roomId, '', this.initSocket, this.onMessage)
         },
-        onMessage(msg: any, ws: WebSocket) {
-            console.log(msg)
+        initSocket(ws: WebSocket) {
             if (this.socket == null) {
                 this.socket = ws
             }
+        },
+        onMessage(msg: any) {
+            console.log(msg)
             // this.messageList.push(msg)
         },
         setMessage() {

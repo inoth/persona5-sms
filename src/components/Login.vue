@@ -24,20 +24,36 @@
 import { defineComponent } from "vue";
 import LoginResp from '../types/login';
 import LoginService from '../service/login'
+import cookies from "../cookie";
+// import router from "../router";
+import { useRouter } from "vue-router";
+
 
 export default defineComponent({
     name: "loginComponent",
     data() {
         return {
             userName: '' as string,
+            // router: useRouter()
         };
     },
     methods: {
         setToLogin() {
-            LoginService.login(this.$data.userName)
+            LoginService.login(this.userName)
                 .then(resp => {
                     console.log(resp)
                     // 跳转到 chatbox
+                    if (resp.status == 200) {
+                        if (resp.data.code == 200) {
+                            // let token = this.$cookies.get("Authorization")
+                            // let token = cookies.getCookie("Authorization")
+                            // console.log(token)
+                            localStorage.setItem("UserInfo", JSON.stringify(resp.data.data))
+                            // const router = useRouter()
+                            // router.push("/chat")
+                            this.$router.push({ path: "/chat" })
+                        }
+                    }
                 }).catch(err => {
                     console.error(err)
                 })

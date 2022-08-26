@@ -5,7 +5,7 @@ class LoginService {
         let params = {
             "userName": name
         }
-        return request.post("/login", params)
+        return request.post("api/login", params)
     }
 }
 

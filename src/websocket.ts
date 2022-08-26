@@ -1,25 +1,26 @@
 import MessageBody from "./types/message";
 
-function newSocket(url: string, params: MessageBody | null, callback: Function) {
+function newSocket(url: string, token: string, ins: Function, callback: Function) {
     let socket: WebSocket;
 
     if (typeof (WebSocket) === 'undefined') {
         console.error('您的浏览器不支持WebSocket');
     } else {
         // 初始化 WebSocket 对象，指定要连接的服务器地址与端口建立连接
-        socket = new WebSocket(url);
+        socket = new WebSocket(url, token);
         // 打开事件
         socket.onopen = function () {
             console.log('Socket 已打开');
-            if (params != null) {
-                socket.send(JSON.stringify(params));
-            }
+            // if (params != null) {
+            //     socket.send(JSON.stringify(params));
+            // }
             // socket.send();
+            ins(socket);
         };
         // 获得消息事件
         socket.onmessage = function (msg) {
             // 发现消息进入, 开始处理前端触发逻辑
-            callback(msg, socket);
+            callback(msg);
         };
         // 关闭事件
         socket.onclose = function () {

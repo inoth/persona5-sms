@@ -1,13 +1,19 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosRequestHeaders } from 'axios'
 
-const beasUrl = 'http://localhost:8080/api'
+// const apiUrl = 'http://localhost:8888/'
+// const wsUrl = 'http://localhost:8889/chat'
+
+const apiUrl = 'http://localhost:4000/'
+const wsUrl = 'http://localhost:4000/chat'
+
+export { wsUrl };
 
 const apiClient: AxiosInstance = createAxios();
 
 function createAxios(): AxiosInstance {
   let token = localStorage.getItem('Authorization');
   let config: AxiosRequestConfig<any> = {
-    baseURL: beasUrl,
+    // baseURL: apiUrl,
     headers: {
       "Content-type": "application/json",
       'Authorization': token === null || token === '' ? '' : token,
