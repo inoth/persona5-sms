@@ -5,10 +5,10 @@
     background-image: url("src/assets/images/bgimgs/chatbox.png");
     background-repeat: no-repeat;
     background-size: 100% 100%;
-    width: 1300px;
+    width: 70rem;
     /* max-width: 1300px;
     min-width: 1300px; */
-    min-height: 900px;
+    min-height: 50rem;
     /* overflow:visible; */
     height: auto;
     padding: 1px;
