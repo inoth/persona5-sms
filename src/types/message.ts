@@ -1,9 +1,9 @@
-export default interface MessageBody {
-    icon: string;
+export interface MessageBody {
+    sourceIcon: string;
     sourceId: string;
     sourceName: string;
     msgType: string;
-    msg: string;
+    msgBody: string;
 }
 
 export interface MsgBox {

@@ -103,6 +103,7 @@ export default defineComponent({
     data() {
         return {
             enfontSize: .55,
+            enMaxfontSize: .8,
             cnfontSize: 1.1,
             hackText: '' as string,
         };
@@ -295,9 +296,13 @@ export default defineComponent({
     },
     methods: {
         CheckWitdh(item: string) {
-            const regex = /\w+/gm;
+            const regex = /[a-z0-9]+/gm;
             if (regex.exec(item) != null) {
                 return this.enfontSize
+            }
+            const regex2 = /[A-Z]+/gm;
+            if (regex2.exec(item) != null) {
+                return this.enMaxfontSize
             }
             return this.cnfontSize
         },
@@ -316,7 +321,7 @@ export default defineComponent({
             // about determining the bounding box of some text,
             // without actually rendering it on the DOM.
             let lines: MsgBox[] = []
-            if (this.message.length > 0) {
+            if (this.message?.length > 0) {
                 this.hackText = this.message
                 let enLen = this.SingleLineWidth(this.message)
                 let en = enLen * this.enfontSize

@@ -7,7 +7,7 @@
         <input id="user-name" required name="description" v-model="userName" />
         <button v-on:click="setToLogin()">login</button>
     </div>
-    <div>
+    <!-- <div>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 90">
             <polygon points="126,16 266,16 235,71 115,66" class="" style="fill: white;"></polygon>
             <polygon points="130,20 251,20 231,67 120,62" class="" style="fill: black;"></polygon>
@@ -17,7 +17,7 @@
                 </tspan>
             </text>
         </svg>
-    </div>
+    </div> -->
 </template>
 
 <script lang="ts">

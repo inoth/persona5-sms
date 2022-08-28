@@ -60,7 +60,7 @@
     <div id="chatboxbg">
         <div id="chatbox">
             <MessageBox v-for="msg of messageList" :remote="msg.sourceId != user.id" :name="msg.sourceName"
-                :icon="msg.icon" :message="msg.msg" />
+                :icon="msg.sourceIcon" :message="msg.msgBody" />
         </div>
         <div id="msg-input">
             <input type="text" v-model="message" v-on:keydown.enter="setMessage">
@@ -80,11 +80,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, getCurrentInstance, onMounted, ref } from "vue";
+import { defineComponent, getCurrentInstance, onMounted, onUnmounted, ref } from "vue";
 import LoginResp from '../types/login';
 import MessageBox from './MessageBox.vue'
-import MessageBody from "../types/message";
+import { MessageBody } from "../types/message";
 import { wsUrl } from "../request";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
     name: "add-login",
@@ -99,37 +100,22 @@ export default defineComponent({
     },
     data() {
         return {
+            iconBeas: "src/assets/images/icon/",
+            router: useRouter(),
             roomId: "05e32454",
             connected: false,
             wsUrl: wsUrl,
             instance: {} as WebSocket,
-            user: {
-                id: 'abc123',
-                name: 'inoth',
-                icon: 'src/assets/images/icon/001.png'
-            } as LoginResp,
+            user: {} as LoginResp,
             message: '',
-            messageList: [
-                {
-                    icon: "src/assets/images/icon/001.png",
-                    sourceId: "abc112",
-                    sourceName: "inoth1",
-                    msg: "test",
-                    msgType: "user"
-                },
-                {
-                    icon: "src/assets/images/icon/001.png",
-                    sourceId: "abc123",
-                    sourceName: "inoth2",
-                    msg: "test",
-                    msgType: "user"
-                }
-            ] as MessageBody[]
+            messageList: [] as MessageBody[]
         };
+    },
+    unmounted() {
+        this.instance.close()
     },
     mounted() {
         this.getSocketData()
-        console.log("ws对象: ", this.instance)
     },
     methods: {
         getSocketData() {
@@ -147,29 +133,24 @@ export default defineComponent({
                 return
             }
             // this.socket = new WebSocket(this.wsUrl + this.roomId, token);
-
             // this.socket.onopen = this.onOpen
-
             // this.socket.onmessage = this.onMessage
-
             // this.socket.onclose = this.onClose
-
             // this.socket.onerror = function (err) {
             //     console.error('Socket 发生了错误,请刷新页面');
             // };
             try {
                 if (this.connected === false) {
-                    var wsInstance = new WebSocket(this.wsUrl + this.roomId, token);
-                    // var wsInstance = new WebSocket((window.location.protocol === 'https:' ? 'wss' : 'ws') + "://" + window.location.host + "/ws/chat/" + this.roomId, token);
+                    var wsInstance = new WebSocket(`${wsUrl + this.roomId}?token=${token}`);
                     wsInstance.onopen = this.onOpen
 
                     wsInstance.onclose = this.onClose
 
-                    wsInstance.onerror = (ev) => {
-                        console.warn(ev)
+                    wsInstance.onerror = (err) => {
+                        console.error(err)
                     }
                     wsInstance.onmessage = this.onMessage
-
+                    console.log("ws对象：", wsInstance)
                     this.instance = wsInstance;
                 } else {
                     this.instance.close(1000, 'Active closure of the user')
@@ -181,31 +162,39 @@ export default defineComponent({
         onOpen(ev: any) {
             console.warn(ev)
             this.connected = true
-            let msg = {
-                icon: this.user.icon,
-                sourceId: this.user.id,
-                sourceName: this.user.name,
-                msg: "init",
-                msgType: 'user',
-            } as MessageBody
-            this.instance.send(JSON.stringify(msg))
+            // let msg = {
+            //    sourceIcon: this.iconBeas + this.user.Icon,
+            //     sourceId: this.user.Id,
+            //     sourceName: this.user.Name,
+            //     msgBody: this.message,
+            //     msgType: 'user',
+            // } as MessageBody
+            // this.instance.send(JSON.stringify(msg))
         },
         onClose(ev: any) {
             console.warn(ev)
             this.connected = false;
+            this.router.push("/login")
         },
         onMessage(msg: MessageEvent<any>) {
-            console.log("返回消息:", msg)
+            console.log("服务返回消息:", msg.data)
+            this.messageList.push(JSON.parse(msg.data))
+            this.scrollToBot()
         },
         setMessage() {
             if (!this.message) {
                 return
             }
+            if (!this.connected) {
+                console.log("连接已断开");
+                this.router.push("/login")
+                return
+            }
             let msg = {
-                icon: this.user.icon,
+                sourceIcon: this.iconBeas + this.user.icon,
                 sourceId: this.user.id,
                 sourceName: this.user.name,
-                msg: this.message,
+                msgBody: this.message,
                 msgType: 'user',
             } as MessageBody
             // this.messageList.push(msg)
