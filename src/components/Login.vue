@@ -1,11 +1,16 @@
 <style scoped>
-@import url("../assets/css/normalize.min.css");
+/* @import url("/css/normalize.min.css"); */
+
+.join {
+    margin-top: 20rem;
+    color: rgb(255, 0, 0);
+}
 </style>
 <template>
-    <div>
+    <div class="join">
         <p>YOUR NAME</p>
         <input id="user-name" required name="description" v-model="userName" />
-        <button v-on:click="setToLogin()">login</button>
+        <button v-on:click="setToLogin()">join room</button>
     </div>
     <!-- <div>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 90">
@@ -22,10 +27,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import LoginResp from '../types/login';
 import LoginService from '../service/login'
-import { getCookie } from "../cookie";
-// import router from "../router";
 import { useRouter } from "vue-router";
 
 

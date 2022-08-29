@@ -2,7 +2,7 @@
 @import url("../assets/css/normalize.min.css");
 
 #chatboxbg {
-    background-image: url("src/assets/images/bgimgs/chatbox.png");
+    background-image: url("/images/bgimgs/chatbox.png");
     background-repeat: no-repeat;
     background-size: 100% 100%;
     width: 70rem;
@@ -92,15 +92,9 @@ export default defineComponent({
     components: {
         MessageBox
     },
-    props: {
-        // rid: {
-        //     type: String,
-        //     required: true,
-        // }
-    },
     data() {
         return {
-            iconBeas: "src/assets/images/icon/",
+            iconBeas: "images/icon/",
             router: useRouter(),
             roomId: "05e32454",
             connected: false,
@@ -115,18 +109,17 @@ export default defineComponent({
         this.instance.close()
     },
     mounted() {
+        let userInfo = localStorage.getItem("UserInfo")
+        if (userInfo == '' || userInfo == null) {
+            console.error("无效用户信息")
+            return
+        }
+        this.user = JSON.parse(userInfo)
+        console.log(this.user)
         this.getSocketData()
     },
     methods: {
         getSocketData() {
-            let userInfo = localStorage.getItem("UserInfo")
-            if (userInfo == '' || userInfo == null) {
-                console.error("无效用户信息")
-                return
-            }
-            this.user = JSON.parse(userInfo)
-            console.log(this.user)
-
             let token = localStorage.getItem('Authorization');
             if (token === null || token === '') {
                 console.log(`token失效: [${token}]`)
@@ -153,7 +146,7 @@ export default defineComponent({
                     console.log("ws对象：", wsInstance)
                     this.instance = wsInstance;
                 } else {
-                    this.instance.close(1000, 'Active closure of the user')
+                    this.instance.close(0, 'Active closure of the user')
                 }
             } catch (err) {
                 console.warn(err)
@@ -174,7 +167,7 @@ export default defineComponent({
         onClose(ev: any) {
             console.warn(ev)
             this.connected = false;
-            this.router.push("/login")
+            this.router.push("/")
         },
         onMessage(msg: MessageEvent<any>) {
             console.log("服务返回消息:", msg.data)
@@ -187,7 +180,7 @@ export default defineComponent({
             }
             if (!this.connected) {
                 console.log("连接已断开");
-                this.router.push("/login")
+                this.router.push("/")
                 return
             }
             let msg = {

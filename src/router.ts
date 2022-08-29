@@ -3,7 +3,7 @@ import { RouteRecordRaw } from "vue-router";
 
 const routes: Array<RouteRecordRaw> = [
     {
-        path: '/login',
+        path: '/',
         name: 'login',
         component: () => import('./components/Login.vue')
     },
@@ -11,21 +11,28 @@ const routes: Array<RouteRecordRaw> = [
         path: '/chat',
         name: 'chatbox',
         component: () => import('./components/ChatBox.vue')
-    }
+    },
+    // {
+    //     path: "*",
+    //     redirect: "/"
+    // }
 ];
 
 const router = createRouter({
     history: createWebHistory(),
     routes,
+    scrollBehavior: () => {
+        history.pushState(null, "", document.URL)
+    }
 });
 
 router.beforeEach((to, from, next) => {
-    if (to.path === '/login') {
+    if (to.path === '/') {
         next();
     } else {
         let token = localStorage.getItem('Authorization');
         if (token === null || token === '') {
-            next('/login');
+            next('/');
         } else {
             next();
         }

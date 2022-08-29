@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build",
+    "build": "vite build && rsync -avz ./dist/ tenxunyun:/home/ubuntu/persona5-sms/.",
     "preview": "vite preview"
   },
   "dependencies": {

@@ -1,10 +1,10 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosRequestHeaders } from 'axios'
 
-// const apiUrl = 'http://localhost:8888/'
+// const apiUrl = 'http://172.17.0.1:8888/'
 // const wsUrl = 'http://localhost:8889/chat'
 
-const apiUrl = 'http://localhost:4000/'
-const wsUrl = 'ws://localhost:8889/ws/chat/'
+// const apiUrl = 'http://localhost:4000/'
+const wsUrl = 'ws://localhost/ws/chat/'
 
 export { wsUrl };
 

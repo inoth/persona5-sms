@@ -21,7 +21,7 @@
     <div class="MsgBox">
         <svg xmlns="http://www.w3.org/2000/svg" :viewBox="`0 0 500 ${viewBoxHeight}`">
 
-            <text ref="hackText" visibility="hidden" :style="{ fontSize: fontSize + 'px' }">{{ hackText }}</text>
+            <text ref="hackText" visibility="hidden" :style="{ fontSize: fontSize + 'px' }">{{  hackText  }}</text>
 
             <!-- Buddy Avatar -->
             <polygon v-if="remote" points="-10,-5 62,5 70,55 5,63"
@@ -38,7 +38,7 @@
                 :transform="`translate(30,${containerHeight / 2 + messageBox.origin.y - 25})`" width="80px" />
             <text v-if="remote" :transform="`translate(33,${containerHeight / 2 + messageBox.origin.y + 50})`"
                 style="font-size: 12px;fill: #fff;">
-                <tspan>{{ name }}</tspan>
+                <tspan>{{  name  }}</tspan>
             </text>
             <!-- Message Text Container Border -->
             <polygon :points="containerBorderPoints" :style="{ fill: primaryColor }" :class="{ flipX: !remote }" />
@@ -57,7 +57,7 @@
                 <tspan v-for="line of wrappedMessage()"
                     :x="remote ? messageBox.origin.x + textOffset.x : 500 - messageBox.origin.x - messageBox.centerWidth"
                     :dy="`${lineHeight}em`" :style="{ fill: primaryColor }">
-                    {{ line.text }}
+                    {{  line.text  }}
                 </tspan>
             </text>
         </svg>
