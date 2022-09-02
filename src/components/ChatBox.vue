@@ -103,7 +103,7 @@ export default defineComponent({
     },
     data() {
         return {
-            iconBeas: "images/icon/",
+            iconBeas: "./icon/",
             router: useRouter(),
             roomId: "05e32454",
             connected: false,
@@ -180,7 +180,11 @@ export default defineComponent({
         },
         onMessage(msg: MessageEvent<any>) {
             console.log("服务返回消息:", msg.data)
-            this.messageList.push(JSON.parse(msg.data))
+            let msgBody = JSON.parse(msg.data) as MessageBody
+            if (msgBody.msgType == "system") {
+                msgBody.sourceIcon = "./icon/system.png"
+            }
+            this.messageList.push(msgBody)
             this.scrollToBot()
         },
         setMessage() {
