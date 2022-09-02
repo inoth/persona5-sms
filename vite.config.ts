@@ -5,7 +5,7 @@ import vue from '@vitejs/plugin-vue'
 export default defineConfig({
   plugins: [vue()],
   base: "./",
-  publicDir: "assets/",
+  publicDir: "src/",
   resolve: {
     alias: {
       '/images': 'src/assets/images',
