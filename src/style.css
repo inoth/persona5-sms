@@ -1,10 +1,5 @@
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap");
 
-html {
-  /* background: #cc0000; */
-  font-family: "Source Sans Pro", sans-serif;
-  font-weight: 700;
-}
 
 html,
 body,
@@ -138,9 +133,6 @@ html {
   padding: 1px;
   padding-bottom: 0;
   /* background-color: #00ff1e; */
-  background-image: url("/images/bgimgs/persona5.jpg");
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
   min-width: 800px;
   overflow: hidden;
 }

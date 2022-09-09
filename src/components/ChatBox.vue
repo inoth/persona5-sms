@@ -1,6 +1,12 @@
 <style scoped>
 @import url("../assets/css/normalize.min.css");
 
+#mainbox{
+    background-image: url("/images/bgimgs/persona5.jpg");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
 #chatboxbg {
     background-image: url("/images/bgimgs/chatbox.png");
     background-repeat: no-repeat;
@@ -56,31 +62,34 @@
 }
 </style>
 
+
 <template>
-    <div id="chatboxbg">
-        <div id="chatbox">
-            <MessageBox v-for="msg of messageList" :remote="msg.sourceId != user.id" :name="msg.sourceName"
-                :icon="msg.sourceIcon" :message="msg.msgBody" />
-        </div>
-        <div id="msg-input">
-            <input type="text" v-model="message" v-on:keydown.enter="setMessage">
-            <div v-on:click="setMessage()" id="sendbtn">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 90" style="height: 3em;width: 360pt;">
-                    <polygon points="126,16 266,16 235,71 115,66" class="" style="fill: white;"></polygon>
-                    <polygon points="130,20 251,20 231,67 120,62" class="" style="fill: black;"></polygon>
-                    <text y="25.25" style="font-size: 18px; text-align:center;">
-                        <tspan x="165" dy="1.5em" style="fill: white;">
-                            Send
-                        </tspan>
-                    </text>
-                </svg>
+    <div id="mainbox">
+        <div id="chatboxbg">
+            <div id="chatbox">
+                <MessageBox v-for="msg of messageList" :remote="msg.sourceId != user.id" :name="msg.sourceName"
+                    :icon="msg.sourceIcon" :message="msg.msgBody" />
+            </div>
+            <div id="msg-input">
+                <input type="text" v-model="message" v-on:keydown.enter="setMessage">
+                <div v-on:click="setMessage()" id="sendbtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 90" style="height: 3em;width: 360pt;">
+                        <polygon points="126,16 266,16 235,71 115,66" class="" style="fill: white;"></polygon>
+                        <polygon points="130,20 251,20 231,67 120,62" class="" style="fill: black;"></polygon>
+                        <text y="25.25" style="font-size: 18px; text-align:center;">
+                            <tspan x="165" dy="1.5em" style="fill: white;">
+                                Send
+                            </tspan>
+                        </text>
+                    </svg>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, getCurrentInstance, onMounted, onUnmounted, ref } from "vue";
+import { defineComponent } from "vue";
 import LoginResp from '../types/login';
 import MessageBox from './MessageBox.vue'
 import { MessageBody } from "../types/message";
@@ -94,7 +103,7 @@ export default defineComponent({
     },
     data() {
         return {
-            iconBeas: "images/icon/",
+            iconBeas: "./icon/",
             router: useRouter(),
             roomId: "05e32454",
             connected: false,
@@ -171,7 +180,11 @@ export default defineComponent({
         },
         onMessage(msg: MessageEvent<any>) {
             console.log("服务返回消息:", msg.data)
-            this.messageList.push(JSON.parse(msg.data))
+            let msgBody = JSON.parse(msg.data) as MessageBody
+            if (msgBody.msgType == "system") {
+                msgBody.sourceIcon = "./icon/system.png"
+            }
+            this.messageList.push(msgBody)
             this.scrollToBot()
         },
         setMessage() {
