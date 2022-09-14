@@ -1,7 +1,7 @@
 <style scoped>
 @import url("../assets/css/normalize.min.css");
 
-#mainbox{
+#mainbox {
     background-image: url("/images/bgimgs/persona5.jpg");
     background-repeat: no-repeat;
     background-size: 100% 100%;
@@ -67,8 +67,8 @@
     <div id="mainbox">
         <div id="chatboxbg">
             <div id="chatbox">
-                <MessageBox v-for="msg of messageList" :remote="msg.sourceId != user.id" :name="msg.sourceName"
-                    :icon="msg.sourceIcon" :message="msg.msgBody" />
+                <MessageBox v-for="msg of messageList" :remote="msg.source.id != user.id" :name="msg.source.name"
+                    :icon="msg.source.icon" :message="msg.msg" />
             </div>
             <div id="msg-input">
                 <input type="text" v-model="message" v-on:keydown.enter="setMessage">
@@ -92,7 +92,7 @@
 import { defineComponent } from "vue";
 import LoginResp from '../types/login';
 import MessageBox from './MessageBox.vue'
-import { MessageBody } from "../types/message";
+import { MessageBody, SendMessageBody } from "../types/message";
 import { wsUrl } from "../request";
 import { useRouter } from "vue-router";
 
@@ -103,9 +103,9 @@ export default defineComponent({
     },
     data() {
         return {
+            token: "",
             iconBeas: "./icon/",
             router: useRouter(),
-            roomId: "05e32454",
             connected: false,
             wsUrl: wsUrl,
             instance: {} as WebSocket,
@@ -134,16 +134,10 @@ export default defineComponent({
                 console.log(`token失效: [${token}]`)
                 return
             }
-            // this.socket = new WebSocket(this.wsUrl + this.roomId, token);
-            // this.socket.onopen = this.onOpen
-            // this.socket.onmessage = this.onMessage
-            // this.socket.onclose = this.onClose
-            // this.socket.onerror = function (err) {
-            //     console.error('Socket 发生了错误,请刷新页面');
-            // };
+            this.token = token;
             try {
                 if (this.connected === false) {
-                    var wsInstance = new WebSocket(`${wsUrl + this.roomId}?token=${token}`);
+                    var wsInstance = new WebSocket(`${wsUrl}?token=${token}`);
                     wsInstance.onopen = this.onOpen
 
                     wsInstance.onclose = this.onClose
@@ -181,8 +175,10 @@ export default defineComponent({
         onMessage(msg: MessageEvent<any>) {
             console.log("服务返回消息:", msg.data)
             let msgBody = JSON.parse(msg.data) as MessageBody
-            if (msgBody.msgType == "system") {
-                msgBody.sourceIcon = "./icon/system.png"
+            if (msgBody.event == "system") {
+                msgBody.source.icon = "./icon/system.png"
+            } else {
+                msgBody.source.icon = this.iconBeas + msgBody.source.icon;
             }
             this.messageList.push(msgBody)
             this.scrollToBot()
@@ -197,12 +193,17 @@ export default defineComponent({
                 return
             }
             let msg = {
-                sourceIcon: this.iconBeas + this.user.icon,
-                sourceId: this.user.id,
-                sourceName: this.user.name,
-                msgBody: this.message,
-                msgType: 'user',
-            } as MessageBody
+                // sourceIcon: this.iconBeas + this.user.icon,
+                // sourceId: this.user.id,
+                // sourceName: this.user.name,
+                // msgBody: this.message,
+                // msgType: 'user',
+                token: this.token,
+                event: "msg",
+                eventBody: {
+                    msg: this.message
+                }
+            } as SendMessageBody
             // this.messageList.push(msg)
             this.message = ''
             this.instance.send(JSON.stringify(msg))

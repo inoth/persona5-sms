@@ -15,22 +15,13 @@ export default defineConfig({
     proxy: {
       "/api": {
         ws: false,
-        target: "http://localhost/api",
+        target: "http://localhost:8888/api",
         changeOrigin: true,
         headers: {
           "Access-Control-Allow-Origin": "*"
         },
         rewrite: (path) => path.replace(/^\/api/, ""),
-      },
-      "/ws": {
-        ws: false,
-        target: "ws://172.17.0.1:8889/ws",
-        changeOrigin: true,
-        headers: {
-          "Access-Control-Allow-Origin": "*"
-        },
-        rewrite: (path) => path.replace(/^\/ws/, ""),
-      },
+      }
     },
   },
 })
