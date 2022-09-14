@@ -4,7 +4,7 @@ import axios, { AxiosInstance, AxiosRequestConfig, AxiosRequestHeaders } from 'a
 // const wsUrl = 'http://localhost:8889/chat'
 
 // const apiUrl = 'http://localhost:4000/'
-const wsUrl = 'ws://localhost/ws/chat/'
+const wsUrl = 'ws://localhost/ws/chat'
 
 export { wsUrl };
 
